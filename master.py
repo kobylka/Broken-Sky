@@ -32,13 +32,7 @@ class MasterProcess:
     def start_gui(self):
         self.win = tk.Tk()
         self.win.title("Counter Drone System GUI")
-        self.win.geometry("600x700")
-
-        #BUTTONS FOR START, STOP, AND ENGAGE
-        button1 = tk.Button(text="Start", command=self.start_tool).pack()
-        button2 = tk.Button(text="Stop", command=self.stop_tool).pack()
-        button3 = tk.Button(text="Engage Spoof", command=self.hackrf_engage).pack()
-        labelLine = tk.Label(text="----------------------------------").pack()
+        self.win.geometry("600x250")
 
         self.brdc_text = tk.StringVar()
         if(self.spoof_module.brdc_present is True):
@@ -46,16 +40,32 @@ class MasterProcess:
         else:
             self.brdc_text.set("No BRDC File Present")
 
-        self.brdc_label = tk.Label(textvariable=self.brdc_text).pack()
-        button4 = tk.Button(text="Download BRDC", command=self.download_brdc).pack()
-        labelLine2 = tk.Label(text="----------------------------------").pack()
+        self.brdc_label = tk.Label(textvariable=self.brdc_text)
+        self.brdc_label.pack()
+        self.brdc_label.place(bordermode=OUTSIDE, relx=0.06, rely=0.05)
+        
+        button4 = tk.Button(text="Download BRDC", command=self.download_brdc)
+        button4.pack()
+        button4.place(bordermode=OUTSIDE, relx=0.075, rely=0.15)
+        
+        labelLine2 = tk.Label(text="----------------------------------")
+        labelLine2.pack()
+        labelLine2.place(bordermode=OUTSIDE, relx=0, rely=0.25)
 
         self.coordinates = tk.StringVar()
         self.coordinates.set("38.8977221,-77.0365938")
 
-        coord_name = tk.Label(text = "Coordinates (lat,long)").pack()
-        coord      = tk.Entry(textvariable=self.coordinates).pack()
-        button5    = tk.Button(text="Generate spoofed GPS file", command=self.generate_gps).pack()
+        coord_name = tk.Label(text = "Coordinates (lat,long)")
+        coord_name.pack()
+        coord_name.place(bordermode=OUTSIDE, relx=0.06, rely=0.3)
+        
+        coord      = tk.Entry(textvariable=self.coordinates)
+        coord.pack()
+        coord.place(bordermode=OUTSIDE, relx=0.05, rely=0.4)
+        
+        button5    = tk.Button(text="Generate spoofed GPS file", command=self.generate_gps)
+        button5.pack()
+        button5.place(bordermode=OUTSIDE, relx=0.03, rely=0.5)
 
         self.l_gain = tk.IntVar()
         self.l_gain.set(self.if_gain)
@@ -63,8 +73,7 @@ class MasterProcess:
         self.g_gain.set(self.bb_gain)
         self.debug_level = tk.IntVar()
         self.debug_level.set(0)
-
-        labelLine7 = tk.Label(text="----------------------------------").pack()
+        
         #SLIDER/SCALE WIDGETS TO ADJUST THRESHOLD AND GAIN
         #LABELS IN BETWEEN IN ORDER TO IDENTIFY SLIDERS
         label1 = tk.Label(text="IF gain (dB)").pack()
@@ -75,24 +84,52 @@ class MasterProcess:
         g = tk.Scale(self.win,orient=tk.HORIZONTAL, from_=0, to=62, resolution=2, variable=self.g_gain).pack()
 
         button4 = tk.Button(text="Adjust gain", command=self.hackrf_adjust).pack()
-        labelLine4 = tk.Label(text="----------------------------------").pack()
+            
+        labelLine5 = tk.Label(text="----------------------------------").pack()
+        
+        #BUTTONS FOR START, STOP, AND ENGAGE
+        button1 = tk.Button(text="Start", command=self.start_tool)
+        button1.pack()
+        button1.place(bordermode=OUTSIDE, relx=0.35, rely=0.8)
+        button2 = tk.Button(text="Stop", command=self.stop_tool)
+        button2.pack()
+        button2.place(bordermode=OUTSIDE, relx=0.42, rely=0.8)
+        button3 = tk.Button(text="Engage Spoof", command=self.hackrf_engage)
+        button3.pack()
+        button3.place(bordermode=OUTSIDE, relx=0.5, rely=0.8)
 
-
-        label3 = tk.Label(text="Threshold in % of signals").pack()
+        label3 = tk.Label(text="Threshold in % of signals")
+        label3.pack()
+        label3.place(bordermode=OUTSIDE, relx=0.73, rely=0.05)
+        
         threshold_perc = tk.Scale(self.win,orient=tk.HORIZONTAL, from_=1, to=100, command=self.change_threshold_perc)
         threshold_perc.set(20)
         threshold_perc.pack()
-        labelLine5 = tk.Label(text="----------------------------------").pack()
+        threshold_perc.place(bordermode=OUTSIDE, relx=0.76, rely=0.12)
+        
+        labelLine6 = tk.Label(text="----------------------------------")
+        labelLine6.pack()
+        labelLine6.place(bordermode=OUTSIDE, relx=0.7, rely=0.28)
 
-        label4 = tk.Label(text="Threshold level (dB)").pack()
+        label4 = tk.Label(text="Threshold level (dB)")
+        label4.pack()
+        label4.place(bordermode=OUTSIDE, relx=0.76, rely=0.33)
+        
         threshold = tk.Scale(self.win, orient=tk.HORIZONTAL, from_=5, to=80, command=self.change_threshold)
         threshold.set(20)
         threshold.pack()
-        labelLine6 = tk.Label(text="----------------------------------").pack()
+        threshold.place(bordermode=OUTSIDE, relx=0.76, rely=0.4)
+        labelLine6 = tk.Label(text="----------------------------------")
+        labelLine6.pack()
+        labelLine6.place(bordermode=OUTSIDE, relx=0.7, rely=0.55)
 
-        label1 = tk.Label(text="Debug level").pack()
+        label1 = tk.Label(text="Debug level")
+        label1.pack()
+        label1.place(bordermode=OUTSIDE, relx=0.77, rely=0.6)
+        
         self.debug_level = tk.Spinbox(self.win, from_=0, to=3, command=self.change_debug_level)
         self.debug_level.pack()
+        self.debug_level.place(bordermode=OUTSIDE, relx=0.73, rely=0.7)
 
         self.win.protocol("WM_DELETE_WINDOW", self.close_window)
         self.win.mainloop()
